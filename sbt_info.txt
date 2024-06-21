@@ -1,0 +1,30 @@
+https://github.com/miciek/grokkingfp-examples/blob/master/build.sbt
+====================================================
+sbt
+run (for scala code)
+runMain main.java.Hello
+====================================================
+sbt console
+
+scala> print("Hello, World!")
+Hello, World!
+
+scala> val n = 20
+val n: Int = 20
+
+scala> n * 2 + 2
+val res1: Int = 42
+
+scala> res1 / 2
+val res2: Int = 21
+
+scala> n
+val res3: Int = 20⑨
+
+scala> :load src/main/scala/example.scala
+...
+scala> :quit
+
+:help Show all the commands with descriptions
+:reset Forget everything and start fresh
+:quit End the session (quit the REPL)

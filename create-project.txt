@@ -1,0 +1,231 @@
+Установка и настройка Scala на Ubuntu включает несколько шагов. Вот подробное руководство по установке и настройке Scala на Ubuntu.
+
+### Шаг 1: Обновление системы
+
+Перед началом установки рекомендуется обновить список пакетов и существующие пакеты.
+
+```sh
+sudo apt update
+sudo apt upgrade
+```
+
+### Шаг 2: Установка Java
+
+Scala требует Java. Установим OpenJDK.
+
+```sh
+sudo apt install openjdk-11-jdk
+```
+
+Проверьте установку Java:
+
+```sh
+java -version
+```
+
+### Шаг 3: Установка Scala
+
+#### Способ 1: Установка через пакетный менеджер
+
+Scala можно установить с помощью пакетного менеджера `apt`.
+
+```sh
+sudo apt install scala
+```
+
+#### Способ 2: Установка с помощью SDKMAN!
+
+SDKMAN! — это инструмент для управления версиями SDK, который поддерживает Scala.
+
+1. Установка SDKMAN!
+
+```sh
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+```
+
+2. Установка Scala с помощью SDKMAN!
+
+```sh
+sdk install scala
+```
+
+### Шаг 4: Проверка установки
+
+Проверьте, что Scala установлена правильно, выполнив следующую команду:
+
+```sh
+scala -version
+```
+
+### Шаг 5: Установка sbt (Scala Build Tool)
+
+`sbt` — это основной инструмент сборки для проектов на Scala.
+
+#### Способ 1: Установка через пакетный менеджер
+
+1. Добавьте репозиторий sbt:
+
+```sh
+echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
+echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
+```
+
+2. Импортируйте ключи GPG:
+
+```sh
+curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x99E82A75642AC823" | sudo apt-key add
+```
+
+3. Обновите список пакетов и установите sbt:
+
+```sh
+sudo apt update
+sudo apt install sbt
+```
+
+#### Способ 2: Установка с помощью SDKMAN!
+
+```sh
+sdk install sbt
+```
+
+### Шаг 6: Создание и настройка проекта на Scala
+
+1. Создайте новый проект:
+
+```sh
+sbt new scala/hello-world.g8
+```
+
+Следуйте инструкциям для создания проекта. Введите имя проекта и другие необходимые данные.
+
+2. Перейдите в каталог проекта:
+
+```sh
+cd <project-name>
+```
+
+3. Запустите sbt:
+
+```sh
+sbt
+```
+
+После запуска sbt, вы можете скомпилировать и запустить ваш проект:
+
+```sh
+compile
+run
+```
+
+### Заключение
+
+Теперь у вас установлен и настроен Scala и sbt на Ubuntu. Вы можете создавать, компилировать и запускать проекты на Scala. Если у вас есть какие-либо вопросы или проблемы, пожалуйста, дайте знать!
+
+Да, `sbt` может управлять и запускать как Scala, так и Java проекты. Если вы хотите использовать `sbt` для компиляции и запуска Java-кода, вы можете следовать этим шагам:
+
+### Установка sbt
+
+Если вы еще не установили `sbt`, следуйте инструкциям из предыдущего ответа для установки.
+
+### Создание нового проекта с поддержкой Java
+
+1. Создайте новый проект с помощью шаблона `sbt`:
+
+```sh
+sbt new scala/hello-world.g8
+```
+
+Следуйте инструкциям и введите имя проекта.
+
+2. Перейдите в каталог проекта:
+
+```sh
+cd <project-name>
+```
+
+### Настройка проекта для поддержки Java
+
+1. Откройте файл `build.sbt` и добавьте зависимость от `Java`:
+
+```sbt
+name := "JavaProject"
+
+version := "0.1"
+
+scalaVersion := "2.13.10"
+
+libraryDependencies += "org.scala-lang" % "scala-library" % "2.13.10"
+```
+
+2. Создайте структуру каталогов для вашего Java-кода. По умолчанию, `sbt` ищет исходный код в `src/main/java` для Java и `src/main/scala` для Scala.
+
+```sh
+mkdir -p src/main/java/com/example
+mkdir -p src/test/java/com/example
+```
+
+### Написание Java-кода
+
+1. Создайте простой Java-класс в `src/main/java/com/example`:
+
+```java
+// src/main/java/com/example/Hello.java
+package com.example;
+
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java from sbt!");
+    }
+}
+```
+
+2. Создайте файл теста в `src/test/java/com/example` (опционально):
+
+```java
+// src/test/java/com/example/HelloTest.java
+package com.example;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class HelloTest {
+    @Test
+    public void testMain() {
+        Hello.main(new String[]{});
+        assertTrue(true);
+    }
+}
+```
+
+### Запуск и компиляция проекта
+
+1. Запустите `sbt` в корневом каталоге проекта:
+
+```sh
+sbt
+```
+
+2. Внутри консоли `sbt` выполните команду `run` для запуска вашего Java-кода:
+
+```sh
+> run
+```
+
+Вывод должен быть таким:
+
+```plaintext
+[info] running com.example.Hello
+Hello, Java from sbt!
+```
+
+3. Вы можете также запустить тесты, если вы их добавили:
+
+```sh
+> test
+```
+
+### Заключение
+
+Теперь вы настроили `sbt` для компиляции и запуска Java-кода. Этот подход позволяет легко интегрировать Scala и Java в один проект, используя `sbt` в качестве основного инструмента сборки. Если у вас есть дополнительные вопросы, пожалуйста, дайте знать!
